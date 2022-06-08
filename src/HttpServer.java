@@ -1,14 +1,17 @@
 import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
 public class HttpServer {
     private int port_number;
+    private Config config;
     public final ServerSocket socket;
 
     public HttpServer() throws IOException {
-        this.port_number = 8080;
+        this.config = new Config("config/config.xml");
+        this.port_number = this.config.getPort_number();
         this.socket = new ServerSocket(this.port_number);
     }
 
@@ -17,6 +20,7 @@ public class HttpServer {
         while (true) {
             //on recupere les flux d'entree et de sortie des sockets
             Socket socketRecu = this.socket.accept();
+            InetAddress ip = socketRecu.getInetAddress();
             OutputStream outputStream = socketRecu.getOutputStream();
 
             InputStream inputStream = socketRecu.getInputStream();
@@ -35,7 +39,7 @@ public class HttpServer {
 
                 //on recupere le fichier demande
                 try {
-                    FileInputStream file = new FileInputStream("site" + tab[1]);
+                    FileInputStream file = new FileInputStream(this.config.getRoot() + tab[1]);
                     byte[] response = file.readAllBytes();
 
                     String httpResponse = "HTTP/1.1 200 OK\r\n\r\n";
