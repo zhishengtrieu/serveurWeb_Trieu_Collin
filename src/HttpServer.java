@@ -24,8 +24,8 @@ public class HttpServer {
             String name = socketRecu.getInetAddress().getHostName();
             InetAddress ip = InetAddress.getByName(name);
             String[] address = ip.toString().split("/");
-            String add = address[1];
-            System.out.println(add);
+            String ad = address[1];
+            System.out.println(ad);
             OutputStream outputStream = socketRecu.getOutputStream();
 
             InputStream inputStream = socketRecu.getInputStream();
