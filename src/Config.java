@@ -6,14 +6,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 
 public class Config {
     private int port_number;
     private String root;
     private boolean index;
-    private InetAddress accept;
-    private InetAddress reject;
+    private String accept;
+    private String reject;
 
     public Config(String nomF) {
         this.port_number = 8080;
@@ -28,10 +27,11 @@ public class Config {
             DocumentBuilder dBuilder = factory.newDocumentBuilder();
             Document doc = dBuilder.parse(xmlFile);
             this.port_number = Integer.parseInt(doc.getElementsByTagName("port").item(0).getTextContent());
-            this.root = doc.getDocumentElement().getAttribute("root");
-            this.index = Boolean.parseBoolean(doc.getDocumentElement().getAttribute("index"));
-            this.accept = InetAddress.getByName(doc.getDocumentElement().getAttribute("accept"));
-            this.reject = InetAddress.getByName(doc.getDocumentElement().getAttribute("reject"));
+            this.root = doc.getElementsByTagName("root").item(0).getTextContent();
+            this.index = Boolean.parseBoolean(doc.getElementsByTagName("index").item(0).getTextContent());
+            this.accept = doc.getElementsByTagName("accept").item(0).getTextContent();
+            this.reject = doc.getElementsByTagName("reject").item(0).getTextContent();
+            System.out.println(this.reject);
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -42,23 +42,23 @@ public class Config {
 
     }
 
-    public InetAddress getReject() {
-        return reject;
+    public String getReject() {
+        return this.reject;
     }
 
     public int getPort_number() {
-        return port_number;
+        return this.port_number;
     }
 
     public String getRoot() {
-        return root;
+        return this.root;
     }
 
     public boolean isIndex() {
-        return index;
+        return this.index;
     }
 
-    public InetAddress getAccept() {
-        return accept;
+    public String getAccept() {
+        return this.accept;
     }
 }

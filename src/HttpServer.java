@@ -20,13 +20,16 @@ public class HttpServer {
         while (true) {
             //on recupere les flux d'entree et de sortie des sockets
             Socket socketRecu = this.socket.accept();
+            System.out.println(this.socket);
+            System.out.println(socketRecu);
             InetAddress ip = socketRecu.getInetAddress();
+            System.out.println(ip);
             OutputStream outputStream = socketRecu.getOutputStream();
 
             InputStream inputStream = socketRecu.getInputStream();
             BufferedReader bfReader = new BufferedReader(new InputStreamReader(inputStream));
             ArrayList<String> request = new ArrayList<String>();
-            //on recupere la requete
+            //on essaye de recuperer la requete
             String received = bfReader.readLine();
             while ((received != null) && (!received.equals(""))) {
                 System.out.println(received);
@@ -34,9 +37,9 @@ public class HttpServer {
                 received = bfReader.readLine();
             }
 
+            //si on recupere une requete
             if (request.size() > 0) {
                 String[] tab = request.get(0).split(" ");
-
                 //on recupere le fichier demande
                 try {
                     FileInputStream file = new FileInputStream(this.config.getRoot() + tab[1]);
