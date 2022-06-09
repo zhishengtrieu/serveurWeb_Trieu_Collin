@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -20,10 +21,11 @@ public class HttpServer {
         while (true) {
             //on recupere les flux d'entree et de sortie des sockets
             Socket socketRecu = this.socket.accept();
-            System.out.println(this.socket);
-            System.out.println(socketRecu);
-            InetAddress ip = socketRecu.getInetAddress();
-            System.out.println(ip);
+            String name = socketRecu.getInetAddress().getHostName();
+            InetAddress ip = InetAddress.getByName(name);
+            String[] address = ip.toString().split("/");
+            String add = address[1];
+            System.out.println(add);
             OutputStream outputStream = socketRecu.getOutputStream();
 
             InputStream inputStream = socketRecu.getInputStream();
