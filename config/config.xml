@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <webconf>
-    <port>80</port>
+    <port>8080</port>
     <root>site</root>
     <index>true</index>
     <accept>192.168.0.0/24</accept>

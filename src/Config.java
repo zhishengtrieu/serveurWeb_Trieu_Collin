@@ -6,8 +6,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.net.Inet6Address;
-import java.net.InetAddress;
 
 public class Config {
     private int port_number;
@@ -17,11 +15,13 @@ public class Config {
     private String reject;
 
     public Config(String nomF) {
-        this.port_number = 8080;
+        //on initialise les variables avec les valeurs par defaut
+        this.port_number = 80;
         this.root = "";
         this.index = false;
         this.accept = null;
         this.reject = null;
+        //on parse le fichier xml
         try {
             File xmlFile = new File(nomF);
 

@@ -1,5 +1,4 @@
 import java.io.*;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,7 +7,7 @@ import java.util.ArrayList;
 public class HttpServer {
     private int port_number;
     private Config config;
-    public final ServerSocket socket;
+    private ServerSocket socket;
 
     public HttpServer() throws IOException {
         this.config = new Config("config/config.xml");
@@ -19,6 +18,13 @@ public class HttpServer {
 
     public void start() throws IOException {
         while (true) {
+            this.config = new Config("config/config.xml");
+            int newPort = this.config.getPort_number();
+            if (newPort != this.port_number) {
+                this.port_number = newPort;
+                this.socket.close();
+                this.socket = new ServerSocket(this.port_number);
+            }
             //on recupere les flux d'entree et de sortie des sockets
             Socket socketRecu = this.socket.accept();
             InetAddress ip = socketRecu.getInetAddress();
@@ -52,6 +58,11 @@ public class HttpServer {
 
                     outputStream.write(response);
                 } catch (FileNotFoundException e) {
+                    FileInputStream file = new FileInputStream(this.config.getRoot() + "/404.html");
+                    byte[] response = file.readAllBytes();
+                    String httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
+                    outputStream.write(httpResponse.getBytes("UTF-8"));
+                    outputStream.write(response);
 
                 }
             }
