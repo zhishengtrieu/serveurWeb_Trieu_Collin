@@ -6,6 +6,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.net.Inet6Address;
+import java.net.InetAddress;
 
 public class Config {
     private int port_number;
@@ -16,7 +18,7 @@ public class Config {
 
     public Config(String nomF) {
         this.port_number = 8080;
-        this.root = null;
+        this.root = "";
         this.index = false;
         this.accept = null;
         this.reject = null;
@@ -30,8 +32,9 @@ public class Config {
             this.root = doc.getElementsByTagName("root").item(0).getTextContent();
             this.index = Boolean.parseBoolean(doc.getElementsByTagName("index").item(0).getTextContent());
             this.accept = doc.getElementsByTagName("accept").item(0).getTextContent();
+            String[] temp = this.accept.split("/");
+            this.accept = temp[0];
             this.reject = doc.getElementsByTagName("reject").item(0).getTextContent();
-            System.out.println(this.reject);
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {

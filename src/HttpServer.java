@@ -21,11 +21,11 @@ public class HttpServer {
         while (true) {
             //on recupere les flux d'entree et de sortie des sockets
             Socket socketRecu = this.socket.accept();
-            String name = socketRecu.getInetAddress().getHostName();
-            InetAddress ip = InetAddress.getByName(name);
+            InetAddress ip = socketRecu.getInetAddress();
+
             String[] address = ip.toString().split("/");
             String ad = address[1];
-            System.out.println(ad);
+
             OutputStream outputStream = socketRecu.getOutputStream();
 
             InputStream inputStream = socketRecu.getInputStream();
