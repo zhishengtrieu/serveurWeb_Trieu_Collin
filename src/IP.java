@@ -53,5 +53,17 @@ public class IP {
         return result;
     }
 
+    public int[] wildCard(int[] masque){
+        int[] result = new int[32];
+        for (int i = 0; i < masque.length; i++) {
+            if (masque[i] ==1) {
+                result[i]= 0;
+            } else {
+                result[i] = 1;
+            }
+        }
+        return result;
+    }
+
 
 }
