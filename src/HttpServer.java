@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 public class HttpServer {
@@ -32,6 +33,7 @@ public class HttpServer {
             String[] address = ip.toString().split("/");
             String ad = address[1];
 
+
             OutputStream outputStream = socketRecu.getOutputStream();
 
             InputStream inputStream = socketRecu.getInputStream();
@@ -50,14 +52,18 @@ public class HttpServer {
                 String[] tab = request.get(0).split(" ");
                 //on recupere le fichier demande
                 try {
-                    FileInputStream file = new FileInputStream(this.config.getRoot() + tab[1]);
-                    byte[] response = file.readAllBytes();
+                    byte[] response;
+                    File file = new File(this.config.getRoot() + tab[1]);
+                    if (!file.isDirectory()) {
+                        response = Files.readAllBytes(file.toPath());
+                    }else{
+                        response = IndexOf.indexOf(this.config, file);
+                    }
 
                     String httpResponse = "HTTP/1.1 200 OK\r\n\r\n";
                     outputStream.write(httpResponse.getBytes("UTF-8"));
-
                     outputStream.write(response);
-                } catch (FileNotFoundException e) {
+                } catch (IOException e) {
                     FileInputStream file = new FileInputStream(this.config.getRoot() + "/404.html");
                     byte[] response = file.readAllBytes();
                     String httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";

@@ -32,8 +32,6 @@ public class Config {
             this.root = doc.getElementsByTagName("root").item(0).getTextContent();
             this.index = Boolean.parseBoolean(doc.getElementsByTagName("index").item(0).getTextContent());
             this.accept = doc.getElementsByTagName("accept").item(0).getTextContent();
-            String[] temp = this.accept.split("/");
-            this.accept = temp[0];
             this.reject = doc.getElementsByTagName("reject").item(0).getTextContent();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -63,5 +61,9 @@ public class Config {
 
     public String getAccept() {
         return this.accept;
+    }
+
+    public void setRoot(String root) {
+        this.root = root;
     }
 }
