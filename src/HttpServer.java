@@ -27,16 +27,16 @@ public class HttpServer {
                 this.socket = new ServerSocket(this.port_number);
             }
             //on recupere les flux d'entree et de sortie des sockets
-            Socket socketRecu = this.socket.accept();;
+            Socket socketRecu = this.socket.accept();
+            ;
 
-            IP gereIP = new IP(socketRecu.getInetAddress(), this.config);
 
             OutputStream outputStream = socketRecu.getOutputStream();
 
+            //on essaye de recuperer la requete
             InputStream inputStream = socketRecu.getInputStream();
             BufferedReader bfReader = new BufferedReader(new InputStreamReader(inputStream));
             ArrayList<String> request = new ArrayList<String>();
-            //on essaye de recuperer la requete
             String received = bfReader.readLine();
             while ((received != null) && (!received.equals(""))) {
                 System.out.println(received);
@@ -46,21 +46,32 @@ public class HttpServer {
 
             //si on recupere une requete
             if (request.size() > 0) {
-                String[] tab = request.get(0).split(" ");
-                //on recupere le fichier demande
-                try {
-                    byte[] response;
-                    File file = new File(this.config.getRoot() + tab[1]);
-                    if (!file.isDirectory()) {
-                        response = Files.readAllBytes(file.toPath());
-                    }else{
-                        response = IndexOf.indexOf(this.config, file);
-                    }
 
-                    String httpResponse = "HTTP/1.1 200 OK\r\n\r\n";
-                    outputStream.write(httpResponse.getBytes("UTF-8"));
-                    outputStream.write(response);
-                } catch (IOException e) {
+                IP gereIP = new IP(socketRecu.getInetAddress(), this.config);
+                if (gereIP.accept()) {
+                    String[] tab = request.get(0).split(" ");
+                    //on recupere le fichier demande
+                    try {
+                        byte[] response;
+                        File file = new File(this.config.getRoot() + tab[1]);
+                        if (!file.isDirectory()) {
+                            response = Files.readAllBytes(file.toPath());
+                        } else {
+                            response = IndexOf.indexOf(this.config, file);
+                        }
+
+                        String httpResponse = "HTTP/1.1 200 OK\r\n\r\n";
+                        outputStream.write(httpResponse.getBytes("UTF-8"));
+                        outputStream.write(response);
+                    } catch (IOException e) {
+                        FileInputStream file = new FileInputStream(this.config.getRoot() + "/404.html");
+                        byte[] response = file.readAllBytes();
+                        String httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
+                        outputStream.write(httpResponse.getBytes("UTF-8"));
+                        outputStream.write(response);
+
+                    }
+                } else {
                     FileInputStream file = new FileInputStream(this.config.getRoot() + "/404.html");
                     byte[] response = file.readAllBytes();
                     String httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
