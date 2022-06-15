@@ -1,3 +1,6 @@
+import java.net.Inet4Address;
+import java.net.InetAddress;
+
 public class IP {
 
     private Config config;
