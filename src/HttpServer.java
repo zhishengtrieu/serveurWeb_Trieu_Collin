@@ -27,12 +27,9 @@ public class HttpServer {
                 this.socket = new ServerSocket(this.port_number);
             }
             //on recupere les flux d'entree et de sortie des sockets
-            Socket socketRecu = this.socket.accept();
-            InetAddress ip = socketRecu.getInetAddress();
+            Socket socketRecu = this.socket.accept();;
 
-            String[] address = ip.toString().split("/");
-            String ad = address[1];
-
+            IP gereIP = new IP(socketRecu.getInetAddress(), this.config);
 
             OutputStream outputStream = socketRecu.getOutputStream();
 
