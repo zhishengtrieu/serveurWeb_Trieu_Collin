@@ -72,11 +72,9 @@ public class HttpServer {
 
                     }
                 } else {
-                    FileInputStream file = new FileInputStream(this.config.getRoot() + "/404.html");
-                    byte[] response = file.readAllBytes();
-                    String httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
+                    String httpResponse = "HTTP/1.1 403 Forbidden\r\n\r\n";
                     outputStream.write(httpResponse.getBytes("UTF-8"));
-                    outputStream.write(response);
+                    outputStream.write("403 Forbidden".getBytes("UTF-8"));
 
                 }
             }
