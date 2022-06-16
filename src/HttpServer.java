@@ -18,23 +18,24 @@ public class HttpServer {
 
 
     public void start() throws IOException {
+        //cette boucle permet de traiter les requetes en continu
         while (true) {
+            //on met a jour la configuation a chaque iteration
             this.config = new Config("config/config.xml");
             int newPort = this.config.getPort_number();
             if (newPort != this.port_number) {
+                //si le port a change, on ferme le socket et on en cree un nouveau
                 this.port_number = newPort;
                 this.socket.close();
                 this.socket = new ServerSocket(this.port_number);
             }
+
             //on recupere les flux d'entree et de sortie des sockets
             Socket socketRecu = this.socket.accept();
-            ;
-
-
             OutputStream outputStream = socketRecu.getOutputStream();
-
-            //on essaye de recuperer la requete
             InputStream inputStream = socketRecu.getInputStream();
+
+            //on essaye de recuperer une requete
             BufferedReader bfReader = new BufferedReader(new InputStreamReader(inputStream));
             ArrayList<String> request = new ArrayList<String>();
             String received = bfReader.readLine();
@@ -46,7 +47,7 @@ public class HttpServer {
 
             //si on recupere une requete
             if (request.size() > 0) {
-
+                //on verifie que l'ip du client n'est pas bannie
                 IP gereIP = new IP(socketRecu.getInetAddress(), this.config);
                 if (gereIP.accept()) {
                     String[] tab = request.get(0).split(" ");
@@ -64,18 +65,18 @@ public class HttpServer {
                         outputStream.write(httpResponse.getBytes("UTF-8"));
                         outputStream.write(response);
                     } catch (IOException e) {
+                        //si on ne trouve aps le fichier on renvoie une erreur 404
                         FileInputStream file = new FileInputStream(this.config.getRoot() + "/404.html");
                         byte[] response = file.readAllBytes();
                         String httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
                         outputStream.write(httpResponse.getBytes("UTF-8"));
                         outputStream.write(response);
-
                     }
                 } else {
+                    //si l'ip est bannie on renvoie une erreur 403
                     String httpResponse = "HTTP/1.1 403 Forbidden\r\n\r\n";
                     outputStream.write(httpResponse.getBytes("UTF-8"));
                     outputStream.write("403 Forbidden".getBytes("UTF-8"));
-
                 }
             }
 
