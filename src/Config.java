@@ -13,8 +13,9 @@ public class Config {
     private boolean index;
     private String accept;
     private String reject;
+    public final static String CONFIG_FILE = "config/config.xml";
 
-    public Config(String nomF) {
+    public Config() {
         //on initialise les variables avec les valeurs par defaut
         this.port_number = 80;
         this.root = "";
@@ -23,7 +24,7 @@ public class Config {
         this.reject = null;
         //on parse le fichier xml
         try {
-            File xmlFile = new File(nomF);
+            File xmlFile = new File(CONFIG_FILE);
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = factory.newDocumentBuilder();
@@ -33,11 +34,7 @@ public class Config {
             this.index = Boolean.parseBoolean(doc.getElementsByTagName("index").item(0).getTextContent());
             this.accept = doc.getElementsByTagName("accept").item(0).getTextContent();
             this.reject = doc.getElementsByTagName("reject").item(0).getTextContent();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
+        } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
 
@@ -63,7 +60,4 @@ public class Config {
         return this.accept;
     }
 
-    public void setRoot(String root) {
-        this.root = root;
-    }
 }

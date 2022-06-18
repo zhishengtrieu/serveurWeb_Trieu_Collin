@@ -11,7 +11,7 @@ public class HttpServer {
     private ServerSocket socket;
 
     public HttpServer() throws IOException {
-        this.config = new Config("config/config.xml");
+        this.config = new Config();
         this.port_number = this.config.getPort_number();
         this.socket = new ServerSocket(this.port_number);
     }
@@ -21,7 +21,7 @@ public class HttpServer {
         //cette boucle permet de traiter les requetes en continu
         while (true) {
             //on met a jour la configuation a chaque iteration
-            this.config = new Config("config/config.xml");
+            this.config = new Config();
             int newPort = this.config.getPort_number();
             if (newPort != this.port_number) {
                 //si le port a change, on ferme le socket et on en cree un nouveau
@@ -50,6 +50,8 @@ public class HttpServer {
                 //on verifie que l'ip du client n'est pas bannie
                 IP gereIP = new IP(socketRecu.getInetAddress(), this.config);
                 if (gereIP.accept()) {
+                    //si elle n'est pas bannie, on traite la requete
+                    //on recupere le nom du fichier que la requete demande
                     String[] tab = request.get(0).split(" ");
                     //on recupere le fichier demande
                     try {
@@ -65,7 +67,7 @@ public class HttpServer {
                         outputStream.write(httpResponse.getBytes("UTF-8"));
                         outputStream.write(response);
                     } catch (IOException e) {
-                        //si on ne trouve aps le fichier on renvoie une erreur 404
+                        //si on ne trouve pas le fichier on renvoie une erreur 404
                         FileInputStream file = new FileInputStream(this.config.getRoot() + "/404.html");
                         byte[] response = file.readAllBytes();
                         String httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";

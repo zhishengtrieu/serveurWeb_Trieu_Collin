@@ -12,9 +12,7 @@ public class IP {
 
     public boolean accept() {
         boolean res = true;
-        if (this.config.getReject() == null) {
-            res = true;
-        } else {
+        if (this.config.getReject() != null) {
             //on transforme l'addresse client en tableau d'octets
             byte[] adr = this.adresse.getAddress();
 
@@ -62,6 +60,11 @@ public class IP {
         return res;
     }
 
+    /**
+     * Renvoie le masque sous forme de tableau d'entier representant les bits
+     * @param n
+     * @return
+     */
     public int[] masque(int n) {
         int[] result = new int[32];
         for (int i = 0; i < n; i++) {
@@ -85,6 +88,12 @@ public class IP {
         return result;
     }
 
+    /**
+     *Trouve l'adresse de reseau d'une adresse ip avec un masque
+     * @param adr
+     * @param masque
+     * @return
+     */
     public int[] network(int[] adr, int[] masque) {
         int[] result = new int[32];
         for (int i = 0; i < adr.length; i++) {
@@ -97,6 +106,12 @@ public class IP {
         return result;
     }
 
+    /**
+     * Trouve l'adresse de broadcast d'un reseau a partir des tableaux de bits d'une l'adresse ip et de la wildcard
+     * @param adr
+     * @param wildCard
+     * @return
+     */
     public int[] broadcast(int[] adr, int[] wildCard) {
         int[] result = new int[32];
         for (int i = 0; i < adr.length; i++) {
@@ -109,6 +124,11 @@ public class IP {
         return result;
     }
 
+    /**
+     * Convertit un tableau de bits en tableau d'octets sous forme d'entiers
+     * @param adr
+     * @return
+     */
     public int[] toByte(int[] adr) {
         int[] res = new int[4];
         for (int i = 0; i < res.length; i++) {
