@@ -40,7 +40,6 @@ public class HttpServer {
             ArrayList<String> request = new ArrayList<String>();
             String received = bfReader.readLine();
             while ((received != null) && (!received.equals(""))) {
-                System.out.println(received);
                 request.add(received);
                 received = bfReader.readLine();
             }
