@@ -13,7 +13,7 @@ public class Config {
     private boolean index;
     private String accept;
     private String reject;
-    public final static String CONFIG_FILE = "config/config.xml";
+    public final static String CONFIG_FILE = "etc/myweb/myweb.conf";
 
     public Config() {
         //on initialise les variables avec les valeurs par defaut

@@ -56,7 +56,7 @@ public class HttpServer {
                     //on recupere le fichier demande
                     try {
                         byte[] response;
-                        File file = new File(this.config.getRoot() + tab[1]);
+                        File file = new File("/Site/"+ tab[1]);
                         if (!file.isDirectory()) {
                             response = Files.readAllBytes(file.toPath());
                         } else {
@@ -68,7 +68,7 @@ public class HttpServer {
                         outputStream.write(response);
                     } catch (IOException e) {
                         //si on ne trouve pas le fichier on renvoie une erreur 404
-                        FileInputStream file = new FileInputStream(this.config.getRoot() + "/404.html");
+                        FileInputStream file = new FileInputStream("/Site/404.html");
                         byte[] response = file.readAllBytes();
                         String httpResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
                         outputStream.write(httpResponse.getBytes("UTF-8"));
@@ -87,6 +87,17 @@ public class HttpServer {
         }
     }
 
+    public static void creerFichierPid(long pid) {
+        try {
+            File f = new File("etc/myweb/myweb.pid");
+            FileWriter fw = new FileWriter(f);
+            fw.write((int) pid);
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void main(String[] args) {
         try {
@@ -95,7 +106,8 @@ public class HttpServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        long pid = ProcessHandle.current().pid();
+        creerFichierPid(pid);
     }
 
 
