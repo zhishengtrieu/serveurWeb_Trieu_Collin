@@ -90,7 +90,7 @@ public class HttpServer {
         try {
             File f = new File("var/run/myweb.pid");
             PrintWriter fw = new PrintWriter(f);
-            fw.write((int) pid);
+            fw.println(pid);
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
