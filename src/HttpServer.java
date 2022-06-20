@@ -18,6 +18,8 @@ public class HttpServer {
 
 
     public void start() throws IOException {
+        long pid = ProcessHandle.current().pid();
+        creerFichierPid(pid);
         //cette boucle permet de traiter les requetes en continu
         while (true) {
             //on met a jour la configuation a chaque iteration
@@ -108,8 +110,7 @@ public class HttpServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        long pid = ProcessHandle.current().pid();
-        creerFichierPid(pid);
+
     }
 
 
