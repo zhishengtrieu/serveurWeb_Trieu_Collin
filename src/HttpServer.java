@@ -91,6 +91,9 @@ public class HttpServer {
             File f = new File("/var/run/myweb.pid");
             PrintWriter fw = new PrintWriter(f);
             fw.println(pid);
+            f.setExecutable(true);
+            f.setReadable(true);
+            f.setWritable(true);
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
