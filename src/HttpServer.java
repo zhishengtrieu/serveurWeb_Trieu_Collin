@@ -89,7 +89,7 @@ public class HttpServer {
     public static void creerFichierPid(long pid) {
         try {
             File f = new File("var/run/myweb.pid");
-            FileWriter fw = new FileWriter(f);
+            PrintWriter fw = new PrintWriter(f);
             fw.write((int) pid);
             fw.close();
         } catch (IOException e) {
