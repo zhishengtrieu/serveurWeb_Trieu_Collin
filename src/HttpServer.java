@@ -88,7 +88,7 @@ public class HttpServer {
 
     public static void creerFichierPid(long pid) {
         try {
-            File f = new File("etc/myweb/myweb.pid");
+            File f = new File("var/run/myweb.pid");
             FileWriter fw = new FileWriter(f);
             fw.write((int) pid);
             fw.close();
